@@ -1,6 +1,6 @@
 {
   "formato": 1,
-  "generado": "2026-08-10T19:16:03.233Z",
+  "generado": "2026-08-10T20:32:48.178Z",
   "apps": [
     {
       "id": "lth-document",
@@ -8,10 +8,20 @@
       "version": "1.0.0",
       "minOs": "2.4.6",
       "archivo": "apps/lth-document/lth-document.js",
-      "bytes": 46405,
-      "sha256": "822b541b2d9a4b03d1f4e32cba416bbbdcb1024c2c3534c68f3c50715b3769ba",
+      "bytes": 47225,
+      "sha256": "5447af63fbcaa4039c40398cb673a2b4f81783eb9e575d8e435a7f2b97d15ee7",
       "notas": "Primera publicacion en la Store."
+    },
+    {
+      "id": "lth-prueba",
+      "nombre": "LTH Prueba",
+      "version": "1.0.0",
+      "minOs": "2.4.6",
+      "archivo": "apps/lth-prueba/lth-prueba.js",
+      "bytes": 3578,
+      "sha256": "5eb5aaacabf06ec563c6318c908f1d9d0ab6efdf562efc5fad8d572e4b7cedc9",
+      "notas": "App de prueba con logo LTH y ciclo completo de instalacion y desinstalacion."
     }
   ],
-  "firma": "MZG_UKIDRZkHUdpmtK4jIJhLtWHTpsPcX0Ecl3_1S-KmA_FYlKQhxT4bknZQO1cGvewW6jl6jxwEg4r58u7DxA"
+  "firma": "Ph1yGZGBEWoaSjXC_ruNWTAHtUV-K33f3bJPVcDeoBWu8dzQJ7z5Q8UITBwd5NRE8w81JSvNckaFSza1QmqAsA"
 }

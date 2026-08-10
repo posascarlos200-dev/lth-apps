@@ -1,0 +1,6 @@
+{
+  "nombre": "LTH Prueba",
+  "version": "1.0.0",
+  "minOs": "2.4.6",
+  "notas": "App de prueba con logo LTH y ciclo completo de instalacion y desinstalacion."
+}
