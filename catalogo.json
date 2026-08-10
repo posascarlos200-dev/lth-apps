@@ -1,0 +1,17 @@
+{
+  "formato": 1,
+  "generado": "2026-08-10T19:16:03.233Z",
+  "apps": [
+    {
+      "id": "lth-document",
+      "nombre": "LTH Document",
+      "version": "1.0.0",
+      "minOs": "2.4.6",
+      "archivo": "apps/lth-document/lth-document.js",
+      "bytes": 46405,
+      "sha256": "822b541b2d9a4b03d1f4e32cba416bbbdcb1024c2c3534c68f3c50715b3769ba",
+      "notas": "Primera publicacion en la Store."
+    }
+  ],
+  "firma": "MZG_UKIDRZkHUdpmtK4jIJhLtWHTpsPcX0Ecl3_1S-KmA_FYlKQhxT4bknZQO1cGvewW6jl6jxwEg4r58u7DxA"
+}
