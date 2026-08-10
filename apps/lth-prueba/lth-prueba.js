@@ -33,7 +33,7 @@
     @media (max-width: 600px) { .lth-prueba { padding: 16px; } .lth-prueba-card { padding: 24px 18px; } }
   `;
 
-  const APP_VERSION = '1.0.1';
+  const APP_VERSION = '1.0.2';
 
   window.LTH_APPS['lth-prueba'] = {
     name: 'LTH Prueba',
@@ -48,7 +48,7 @@
           <section class="lth-prueba-card">
             <div class="lth-prueba-logo">${LOGO}</div>
             <h1>LTH Prueba</h1>
-            <p>Actualizacion descargada desde LTH Store. Esta pantalla confirma que la app recibio la nueva version y conserva el logo.</p>
+            <p>Actualizacion descargada desde LTH Store. Esta version confirma el flujo de actualizacion y conserva el logo.</p>
             <div class="lth-prueba-ok"><span class="lth-prueba-dot"></span>Actualizada correctamente</div>
             <div class="lth-prueba-meta">
               <div><small>Version</small><strong>${APP_VERSION}</strong></div>

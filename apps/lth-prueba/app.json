@@ -1,6 +1,6 @@
 {
   "nombre": "LTH Prueba",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "minOs": "2.4.6",
-  "notas": "Actualizacion de prueba: confirma que la Store descarga una nueva version y conserva el logo."
+  "notas": "Nueva actualizacion de prueba para validar el aviso visual estilo LTH Store."
 }
