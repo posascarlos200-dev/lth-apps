@@ -33,9 +33,11 @@
     @media (max-width: 600px) { .lth-prueba { padding: 16px; } .lth-prueba-card { padding: 24px 18px; } }
   `;
 
+  const APP_VERSION = '1.0.1';
+
   window.LTH_APPS['lth-prueba'] = {
     name: 'LTH Prueba',
-    version: '1.0.0',
+    version: APP_VERSION,
     icon: LOGO,
     gradient: 'linear-gradient(135deg,#007edb,#00c9f3)',
 
@@ -46,10 +48,10 @@
           <section class="lth-prueba-card">
             <div class="lth-prueba-logo">${LOGO}</div>
             <h1>LTH Prueba</h1>
-            <p>Aplicacion de prueba publicada desde LTH Store. Este logo viaja dentro del archivo de la app para comprobar que la instalacion lo conserva.</p>
-            <div class="lth-prueba-ok"><span class="lth-prueba-dot"></span>Instalada correctamente</div>
+            <p>Actualizacion descargada desde LTH Store. Esta pantalla confirma que la app recibio la nueva version y conserva el logo.</p>
+            <div class="lth-prueba-ok"><span class="lth-prueba-dot"></span>Actualizada correctamente</div>
             <div class="lth-prueba-meta">
-              <div><small>Version</small><strong>1.0.0</strong></div>
+              <div><small>Version</small><strong>${APP_VERSION}</strong></div>
               <div><small>Origen</small><strong>Catalogo firmado</strong></div>
             </div>
           </section>
