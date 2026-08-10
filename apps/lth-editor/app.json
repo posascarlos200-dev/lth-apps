@@ -1,0 +1,8 @@
+{
+  "nombre": "LTH.editor",
+  "version": "1.0.0",
+  "minOs": "2.4.6",
+  "orden": 9,
+  "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-editor/icon.png",
+  "notas": "Primera publicacion del editor multimedia LTH."
+}

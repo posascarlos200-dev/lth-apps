@@ -2,5 +2,7 @@
   "nombre": "LTH Document",
   "version": "1.0.0",
   "minOs": "2.4.6",
-  "notas": "Primera publicacion en la Store."
+  "orden": 2,
+  "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-document/icon.svg",
+  "notas": "Primera publicacion de LTH Document en la Store."
 }

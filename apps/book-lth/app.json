@@ -1,0 +1,8 @@
+{
+  "nombre": "Book LTH",
+  "version": "1.0.0",
+  "minOs": "2.4.6",
+  "orden": 11,
+  "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/book-lth/icon.png",
+  "notas": "Primera publicacion de la biblioteca Book LTH."
+}

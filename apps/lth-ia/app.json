@@ -1,0 +1,8 @@
+{
+  "nombre": "LTH-IA",
+  "version": "1.0.0",
+  "minOs": "2.4.6",
+  "orden": 1,
+  "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-ia/icon.png",
+  "notas": "Primera publicacion de LTH-IA en la Store."
+}

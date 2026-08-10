@@ -1,0 +1,8 @@
+{
+  "nombre": "LTH Bitcoin",
+  "version": "1.0.0",
+  "minOs": "2.4.6",
+  "orden": 10,
+  "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-bitcoin/icon.svg",
+  "notas": "Primera publicacion del monitor de Bitcoin LTH."
+}

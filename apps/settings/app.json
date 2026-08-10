@@ -1,0 +1,8 @@
+{
+  "nombre": "Configuracion",
+  "version": "1.0.0",
+  "minOs": "2.4.6",
+  "orden": 6,
+  "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/settings/icon.png",
+  "notas": "Primera publicacion de Configuracion en la Store."
+}

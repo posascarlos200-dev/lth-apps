@@ -1,0 +1,8 @@
+{
+  "nombre": "Archivos",
+  "version": "1.0.0",
+  "minOs": "2.4.6",
+  "orden": 5,
+  "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-files/icon.png",
+  "notas": "Primera publicacion del administrador de archivos LTH."
+}

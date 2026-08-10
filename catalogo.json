@@ -1,27 +1,151 @@
 {
   "formato": 1,
-  "generado": "2026-08-10T21:09:29.238Z",
+  "generado": "2026-08-10T21:25:13.284Z",
   "apps": [
+    {
+      "id": "lth-ia",
+      "nombre": "LTH-IA",
+      "version": "1.0.0",
+      "minOs": "2.4.6",
+      "orden": 1,
+      "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-ia/icon.png",
+      "archivo": "apps/lth-ia/lth-ia.js",
+      "bytes": 551759,
+      "sha256": "4c9a75c610eeda7ee7b0cb73ed78c1cc125342c844a4dfd7bd3c0dc57fc67d8b",
+      "notas": "Primera publicacion de LTH-IA en la Store."
+    },
     {
       "id": "lth-document",
       "nombre": "LTH Document",
       "version": "1.0.0",
       "minOs": "2.4.6",
+      "orden": 2,
+      "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-document/icon.svg",
       "archivo": "apps/lth-document/lth-document.js",
       "bytes": 46405,
       "sha256": "822b541b2d9a4b03d1f4e32cba416bbbdcb1024c2c3534c68f3c50715b3769ba",
-      "notas": "Primera publicacion en la Store."
+      "notas": "Primera publicacion de LTH Document en la Store."
+    },
+    {
+      "id": "browser",
+      "nombre": "Browser LTH",
+      "version": "1.0.0",
+      "minOs": "2.4.6",
+      "orden": 3,
+      "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/browser/icon.png",
+      "archivo": "apps/browser/browser.js",
+      "bytes": 44033,
+      "sha256": "5db69bcb4cab12cf5a251228ae34300a19cf383582eb463971c87e37fac3bc4e",
+      "notas": "Primera publicacion del navegador seguro de LTH."
+    },
+    {
+      "id": "lth-prog",
+      "nombre": "LTH Prog",
+      "version": "1.0.0",
+      "minOs": "2.4.6",
+      "orden": 4,
+      "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-prog/icon.png",
+      "archivo": "apps/lth-prog/lth-prog.js",
+      "bytes": 759451,
+      "sha256": "30b307b0097786923c43001704f570608b51c9a684888309d8313f2bf42245b4",
+      "notas": "Primera publicacion del entorno de programacion LTH."
+    },
+    {
+      "id": "lth-files",
+      "nombre": "Archivos",
+      "version": "1.0.0",
+      "minOs": "2.4.6",
+      "orden": 5,
+      "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-files/icon.png",
+      "archivo": "apps/lth-files/lth-files.js",
+      "bytes": 89498,
+      "sha256": "cadd8e0a211f368090789e3eca5634065be9df4674fbd0857ba3f54f6fc19cbc",
+      "notas": "Primera publicacion del administrador de archivos LTH."
+    },
+    {
+      "id": "settings",
+      "nombre": "Configuracion",
+      "version": "1.0.0",
+      "minOs": "2.4.6",
+      "orden": 6,
+      "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/settings/icon.png",
+      "archivo": "apps/settings/settings.js",
+      "bytes": 121942,
+      "sha256": "bf80db24e210c7ef410239ecf21aa0a217c751e2f47011b79db4345cbfc453d6",
+      "notas": "Primera publicacion de Configuracion en la Store."
+    },
+    {
+      "id": "lth-code",
+      "nombre": "LTH Code",
+      "version": "1.0.0",
+      "minOs": "2.4.6",
+      "orden": 7,
+      "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-code/icon.png",
+      "archivo": "apps/lth-code/lth-code.js",
+      "bytes": 117452,
+      "sha256": "d0ca1056b8a3449dfb402a704c1ce92f599fefb5bda8d00884f55a83bec095e2",
+      "notas": "Primera publicacion del asistente de codigo LTH."
+    },
+    {
+      "id": "lth-remote",
+      "nombre": "LTH Remote",
+      "version": "1.0.0",
+      "minOs": "2.4.6",
+      "orden": 8,
+      "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-remote/icon.png",
+      "archivo": "apps/lth-remote/lth-remote.js",
+      "bytes": 28541,
+      "sha256": "732849b50e8eaadf3369f214e989915a27510b2649f6a383e3ee4984b096d3c3",
+      "notas": "Primera publicacion del canal remoto de LTH."
+    },
+    {
+      "id": "lth-editor",
+      "nombre": "LTH.editor",
+      "version": "1.0.0",
+      "minOs": "2.4.6",
+      "orden": 9,
+      "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-editor/icon.png",
+      "archivo": "apps/lth-editor/lth-editor.js",
+      "bytes": 143012,
+      "sha256": "c22b586759e386fdab1f2e0adfc4eda05f44be5c306cbf0325f6f29b7234615a",
+      "notas": "Primera publicacion del editor multimedia LTH."
+    },
+    {
+      "id": "lth-bitcoin",
+      "nombre": "LTH Bitcoin",
+      "version": "1.0.0",
+      "minOs": "2.4.6",
+      "orden": 10,
+      "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-bitcoin/icon.svg",
+      "archivo": "apps/lth-bitcoin/lth-bitcoin.js",
+      "bytes": 71117,
+      "sha256": "2cfd53c3a5f26a94e2f705a48e207190515deb8f33ee2b5ef7060ad53e8193f9",
+      "notas": "Primera publicacion del monitor de Bitcoin LTH."
+    },
+    {
+      "id": "book-lth",
+      "nombre": "Book LTH",
+      "version": "1.0.0",
+      "minOs": "2.4.6",
+      "orden": 11,
+      "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/book-lth/icon.png",
+      "archivo": "apps/book-lth/book-lth.js",
+      "bytes": 65565,
+      "sha256": "2b0621f662d490e5083ea0a02d69c8ec7743aced309dda2bf4d9c190f7ffa4a7",
+      "notas": "Primera publicacion de la biblioteca Book LTH."
     },
     {
       "id": "lth-prueba",
       "nombre": "LTH Prueba",
       "version": "1.0.2",
       "minOs": "2.4.6",
+      "orden": 12,
+      "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-prueba/icon.svg",
       "archivo": "apps/lth-prueba/lth-prueba.js",
       "bytes": 3595,
       "sha256": "f9f11eb64397d8ee9593993a97ef949cb12b9f153c80342380ff64ea7bff57e2",
       "notas": "Nueva actualizacion de prueba para validar el aviso visual estilo LTH Store."
     }
   ],
-  "firma": "CyVxXf_TL8VG1alD8cWnCD-5WBKWDZ6Pk9HjCkp_-Bn8-JwyHDit4KrZbqY2wqzdp0QXS0ZWvSb7u25OjoVZsw"
+  "firma": "4xdsvZBVlOPniM0hmih9mdRbKXWPWhroP2he1oFNlApdxBkIPpigpECGiIjWo9sZYUdizkNeqqkToExMHM2eVA"
 }

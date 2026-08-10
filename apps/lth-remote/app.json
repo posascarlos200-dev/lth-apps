@@ -1,0 +1,8 @@
+{
+  "nombre": "LTH Remote",
+  "version": "1.0.0",
+  "minOs": "2.4.6",
+  "orden": 8,
+  "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-remote/icon.png",
+  "notas": "Primera publicacion del canal remoto de LTH."
+}

@@ -1,0 +1,8 @@
+{
+  "nombre": "LTH Prog",
+  "version": "1.0.0",
+  "minOs": "2.4.6",
+  "orden": 4,
+  "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-prog/icon.png",
+  "notas": "Primera publicacion del entorno de programacion LTH."
+}

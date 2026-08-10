@@ -2,5 +2,7 @@
   "nombre": "LTH Prueba",
   "version": "1.0.2",
   "minOs": "2.4.6",
+  "orden": 12,
+  "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-prueba/icon.svg",
   "notas": "Nueva actualizacion de prueba para validar el aviso visual estilo LTH Store."
 }

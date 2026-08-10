@@ -1,0 +1,8 @@
+{
+  "nombre": "LTH Code",
+  "version": "1.0.0",
+  "minOs": "2.4.6",
+  "orden": 7,
+  "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-code/icon.png",
+  "notas": "Primera publicacion del asistente de codigo LTH."
+}
