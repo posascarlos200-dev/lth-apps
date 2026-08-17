@@ -1,8 +1,8 @@
 {
   "nombre": "LTH Bitcoin",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "minOs": "2.4.7",
   "orden": 10,
   "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-bitcoin/icon.svg",
-  "notas": "Grafico en vivo por WebSocket de Coinbase, historial de velas liquidadas con la ultima resaltada, reloj de la vela de 15 minutos y correccion de precision en la apertura (XRP se pintaba al reves)."
+  "notas": "Boton de ajustes con seccion Apariencia y modo claro. La eleccion se recuerda."
 }

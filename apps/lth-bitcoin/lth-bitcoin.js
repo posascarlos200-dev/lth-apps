@@ -51,6 +51,7 @@
     pcOnlineMs: 50000,
     viewKey: 'ltb.view.v2',
     chartTfKey: 'ltb.chartTf.v1',
+    themeKey: 'ltb.theme.v1',
   };
 
   // Temporalidades del grafico grande. El minuto 1 se queda "windowed": solo
@@ -682,6 +683,7 @@
       this.state = {
         view: this._loadView(),          // 'BTC-USD' ... 'XRP-USD' | 'ALL'
         chartTf: this._loadChartTf(),    // '15' | '5' | '1' — temporalidad del grafico grande
+        theme: this._loadTheme(),        // 'dark' | 'light'
         assets: {},
         sim: this._loadSim(),
         simResult: null,
@@ -696,6 +698,7 @@
       this._marketRr = 0;
       this._buildDom(container);
       this._bind();
+      this._applyTheme();
       this._applyView();
       this._paintChartTfButtons();
       this._tickFeed();
@@ -779,6 +782,48 @@
     _saveChartTf() {
       try { localStorage.setItem(CFG.chartTfKey, this.state.chartTf); }
       catch (error) { /* sin espacio: la temporalidad sigue viva en memoria */ }
+    },
+
+    // ── Apariencia ──────────────────────────────────────────────────────────
+    // El tema es puro CSS: se marca la raiz y las variables de color cambian de
+    // valor. Ningun componente necesita enterarse.
+    _loadTheme() {
+      try {
+        const raw = String(localStorage.getItem(CFG.themeKey) || '');
+        return raw === 'light' ? 'light' : 'dark';
+      } catch (error) { return 'dark'; }
+    },
+
+    _saveTheme() {
+      try { localStorage.setItem(CFG.themeKey, this.state.theme); }
+      catch (error) { /* sin espacio: el tema sigue vivo en memoria */ }
+    },
+
+    _applyTheme() {
+      if (!this._root) return;
+      const light = this.state.theme === 'light';
+      this._root.classList.toggle('light', light);
+      const dark = this._$('#ltbThemeDark');
+      const claro = this._$('#ltbThemeLight');
+      if (dark) dark.classList.toggle('active', !light);
+      if (claro) claro.classList.toggle('active', light);
+    },
+
+    _setTheme(next) {
+      const value = next === 'light' ? 'light' : 'dark';
+      if (value === this.state.theme) return;
+      this.state.theme = value;
+      this._saveTheme();
+      this._applyTheme();
+    },
+
+    _toggleSettings(open) {
+      const panel = this._$('#ltbSettings');
+      const gear = this._$('#ltbGear');
+      if (!panel) return;
+      const show = open == null ? panel.hidden : !!open;
+      panel.hidden = !show;
+      if (gear) gear.setAttribute('aria-expanded', show ? 'true' : 'false');
     },
 
     _loadSim() {
@@ -923,8 +968,30 @@
       <div class="ltb-link" id="ltbLink">
         <i></i><span id="ltbLinkText">Conectando</span>
       </div>
+      <button class="ltb-gear" id="ltbGear" type="button"
+        aria-haspopup="dialog" aria-expanded="false" aria-label="Ajustes" title="Ajustes">&#9881;</button>
     </div>
   </header>
+  <div class="ltb-settings" id="ltbSettings" role="dialog" aria-label="Ajustes" hidden>
+    <header class="ltb-settings-head">
+      <strong>Ajustes</strong>
+      <button class="ltb-settings-close" id="ltbSettingsClose" type="button" aria-label="Cerrar">&#10005;</button>
+    </header>
+    <section class="ltb-settings-block">
+      <h3>Apariencia</h3>
+      <p>Elige como se ve la app. Se recuerda para la proxima vez.</p>
+      <div class="ltb-theme-row">
+        <button class="ltb-theme-btn" id="ltbThemeDark" type="button" data-theme="dark">
+          <i class="ltb-theme-chip dark" aria-hidden="true"></i>
+          <span>Modo oscuro</span>
+        </button>
+        <button class="ltb-theme-btn" id="ltbThemeLight" type="button" data-theme="light">
+          <i class="ltb-theme-chip light" aria-hidden="true"></i>
+          <span>Modo claro</span>
+        </button>
+      </div>
+    </section>
+  </div>
 
   <nav class="ltb-rail" id="ltbRail" aria-label="Activos del motor">
     ${rail}
@@ -1129,6 +1196,25 @@
     },
 
     _bind() {
+      const gear = this._$('#ltbGear');
+      if (gear) gear.addEventListener('click', () => this._toggleSettings());
+      const close = this._$('#ltbSettingsClose');
+      if (close) close.addEventListener('click', () => this._toggleSettings(false));
+      const panel = this._$('#ltbSettings');
+      if (panel) {
+        panel.addEventListener('click', (event) => {
+          const button = event.target.closest('[data-theme]');
+          if (!button) return;
+          this._setTheme(button.getAttribute('data-theme'));
+        });
+      }
+      // Un clic fuera cierra el panel; dentro, no.
+      if (this._root) {
+        this._root.addEventListener('click', (event) => {
+          const dentro = event.target.closest('#ltbSettings, #ltbGear');
+          if (!dentro) this._toggleSettings(false);
+        });
+      }
       const rail = this._$('#ltbRail');
       if (rail) {
         rail.addEventListener('click', (event) => {
@@ -3028,6 +3114,60 @@
   border:1.5px solid #0b0b10;transition:left .5s linear,top .35s cubic-bezier(.22,1,.36,1);}
 .ltb-baseline-dot.up{background:var(--ltb-target-up);box-shadow:0 0 8px rgba(57,255,20,.85);}
 .ltb-baseline-dot.down{background:var(--ltb-down);box-shadow:0 0 8px rgba(255,45,70,.85);}
+/* ===== Ajustes y apariencia ===== */
+.ltb-gear{flex:none;width:34px;height:34px;border:1px solid var(--ltb-edge);border-radius:10px;
+  background:rgba(8,8,12,.72);color:var(--ltb-dim);font-size:16px;line-height:1;cursor:pointer;
+  transition:color .18s ease,border-color .18s ease,transform .18s ease;}
+.ltb-gear:hover{color:var(--ltb-ink);border-color:var(--ltb-up);transform:rotate(35deg);}
+.ltb-settings{position:absolute;top:74px;right:16px;z-index:60;width:270px;padding:14px;
+  border:1px solid var(--ltb-edge);border-radius:14px;background:var(--ltb-panel-raised);
+  box-shadow:0 18px 44px rgba(0,0,0,.5);}
+.ltb-settings[hidden]{display:none;}
+.ltb-settings-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.ltb-settings-head strong{color:var(--ltb-ink);font-size:13px;letter-spacing:.04em;}
+.ltb-settings-close{width:24px;height:24px;border:none;border-radius:7px;background:transparent;
+  color:var(--ltb-faint);font-size:12px;cursor:pointer;}
+.ltb-settings-close:hover{color:var(--ltb-ink);background:rgba(255,255,255,.06);}
+.ltb-settings-block h3{margin:0 0 3px;color:var(--ltb-ink);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;}
+.ltb-settings-block p{margin:0 0 10px;color:var(--ltb-faint);font-size:11px;line-height:1.4;}
+.ltb-theme-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.ltb-theme-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px;
+  border:1px solid var(--ltb-edge);border-radius:11px;background:var(--ltb-deep);
+  color:var(--ltb-dim);font-size:11px;cursor:pointer;transition:border-color .18s ease,color .18s ease;}
+.ltb-theme-btn:hover{color:var(--ltb-ink);}
+.ltb-theme-btn.active{border-color:var(--ltb-up);color:var(--ltb-ink);}
+.ltb-theme-chip{width:34px;height:22px;border-radius:6px;border:1px solid var(--ltb-edge);}
+.ltb-theme-chip.dark{background:linear-gradient(135deg,#0b0b10,#22222c);}
+.ltb-theme-chip.light{background:linear-gradient(135deg,#f4f5f8,#dfe2ea);}
+
+/* Modo claro: solo se reescriben las variables de color. Ningun componente
+   necesita saber en que tema esta. */
+.ltb-root.light{
+  --ltb-void:#eef0f5;--ltb-panel:#ffffff;--ltb-panel-raised:#ffffff;--ltb-deep:#f4f5f8;
+  --ltb-edge:#d5d8e0;--ltb-edge-hot:#f3c6cf;--ltb-ink:#14161c;--ltb-dim:#565b68;
+  --ltb-faint:#7b8090;
+  --ltb-up:#8a9a00;--ltb-down:#d81030;--ltb-target-up:#128a10;
+  --ltb-amber:#b96b00;--ltb-red-deep:#c796a0;
+  color:var(--ltb-ink);
+  background:
+    radial-gradient(760px 300px at 50% -14%,rgba(138,154,0,.10),transparent 70%),
+    radial-gradient(600px 320px at 12% 4%,rgba(216,16,48,.07),transparent 68%),
+    linear-gradient(180deg,#f7f8fb 0%,var(--ltb-void) 100%);}
+.ltb-root.light::before{opacity:.28;}
+.ltb-root.light .ltb-top{background:rgba(255,255,255,.94);
+  border-bottom-color:rgba(216,16,48,.18);}
+.ltb-root.light .ltb-gear,
+.ltb-root.light .ltb-candleclock{background:#ffffff;}
+.ltb-root.light .ltb-q,
+.ltb-root.light .ltb-card{background:linear-gradient(180deg,#ffffff,#fbfbfd);
+  box-shadow:0 8px 20px rgba(20,22,28,.08);}
+.ltb-root.light .ltb-q-chart{background-color:#fbfbfd;
+  background-image:linear-gradient(rgba(216,16,48,.05) 1px,transparent 1px);}
+.ltb-root.light .ltb-baseline-ref{stroke:#333a46;opacity:.5;}
+.ltb-root.light .ltb-settings{box-shadow:0 18px 44px rgba(20,22,28,.16);}
+.ltb-root.light .ltb-settings-close:hover{background:rgba(20,22,28,.07);}
+
 /* Reloj de la vela de 15 min. Solo en la vista de los 4: en la de un activo ya
    esta el medidor del target con su propio contador. */
 .ltb-candleclock{display:none;flex-direction:column;gap:3px;min-width:104px;padding:6px 10px 7px;

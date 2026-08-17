@@ -1,6 +1,6 @@
 {
   "formato": 1,
-  "generado": "2026-08-17T19:29:37.865Z",
+  "generado": "2026-08-17T19:38:31.036Z",
   "apps": [
     {
       "id": "lth-ia",
@@ -113,14 +113,14 @@
     {
       "id": "lth-bitcoin",
       "nombre": "LTH Bitcoin",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "minOs": "2.4.7",
       "orden": 10,
       "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-bitcoin/icon.svg",
       "archivo": "apps/lth-bitcoin/lth-bitcoin.js",
-      "bytes": 166442,
-      "sha256": "592122a0f75991f1bd5b798e6e5a711dfd372ca3e52889c94c1d179a309d2543",
-      "notas": "Grafico en vivo por WebSocket de Coinbase, historial de velas liquidadas con la ultima resaltada, reloj de la vela de 15 minutos y correccion de precision en la apertura (XRP se pintaba al reves)."
+      "bytes": 173465,
+      "sha256": "fe242f96dddb830cbf9ca52db8d6e8b088968f80543be17af508461f2c47e24c",
+      "notas": "Boton de ajustes con seccion Apariencia y modo claro. La eleccion se recuerda."
     },
     {
       "id": "book-lth",
@@ -147,5 +147,5 @@
       "notas": "Nueva actualizacion de prueba para validar el aviso visual estilo LTH Store."
     }
   ],
-  "firma": "a0iDEd9a1_mszMbNoRx2whHaoqibUTmSnUj5PybIDrDFx1CbpnFD346HHC4DqSBIfm6INfKvo-ZSykSupBKLJg"
+  "firma": "-J4uTFeWbD-_5mUKfJTUy-F_xOsKLVBhIxbWzMv7OMBekROM928t4qfHe46XdHUhE_AyBdmVwP18AB4P5MgNmg"
 }
