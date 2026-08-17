@@ -670,9 +670,13 @@
     return { target, currentPrice, move, movePct, position };
   }
 
+  // Sube con cada publicacion en la Store: sella la hoja de estilos para que
+  // una actualizacion no se quede con el CSS de la version anterior.
+  const APP_VERSION = '2.2.0';
+
   window.LTH_APPS['lth-bitcoin'] = {
     name: 'LTH Bitcoin',
-    version: '2.0.0',
+    version: APP_VERSION,
     icon: '₿',
     gradient: 'linear-gradient(135deg,#e8ff26 0%,#ffa31a 48%,#ff2d46 100%)',
 
@@ -2646,9 +2650,16 @@
     },
 
     _injectStyles() {
-      if (document.getElementById('ltb-styles')) return;
-      const style = document.createElement('style');
+      // Ojo con esto al actualizar por Store: antes se salia si YA existia un
+      // <style> con este id, y tras una actualizacion el que sigue en la pagina
+      // es el de la version vieja. El codigo entraba nuevo y los estilos se
+      // quedaban viejos, asi que lo que se acababa de agregar salia en crudo.
+      // Ahora la etiqueta lleva la version y se reescribe cuando no coincide.
+      const previo = document.getElementById('ltb-styles');
+      if (previo && previo.getAttribute('data-version') === APP_VERSION) return;
+      const style = previo || document.createElement('style');
       style.id = 'ltb-styles';
+      style.setAttribute('data-version', APP_VERSION);
       style.textContent = `
 .ltb-root{
   --ltb-void:#07070a;--ltb-panel:#101015;--ltb-panel-raised:#15151d;--ltb-deep:#0b0b10;
@@ -3279,7 +3290,7 @@
   .ltb-root *{scroll-behavior:auto!important;animation:none!important;}
   .ltb-celebrate-burst{animation-duration:.01s!important;}}
 `;
-      document.head.appendChild(style);
+      if (!previo) document.head.appendChild(style);
     },
   };
 })();
