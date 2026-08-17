@@ -1,6 +1,6 @@
 {
   "formato": 1,
-  "generado": "2026-08-10T21:25:13.284Z",
+  "generado": "2026-08-17T19:29:37.865Z",
   "apps": [
     {
       "id": "lth-ia",
@@ -70,8 +70,8 @@
       "orden": 6,
       "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/settings/icon.png",
       "archivo": "apps/settings/settings.js",
-      "bytes": 121942,
-      "sha256": "bf80db24e210c7ef410239ecf21aa0a217c751e2f47011b79db4345cbfc453d6",
+      "bytes": 119780,
+      "sha256": "963296a977ddc2f283fbfe9f36d2a757eae743676c8df77fc950882023c81041",
       "notas": "Primera publicacion de Configuracion en la Store."
     },
     {
@@ -113,14 +113,14 @@
     {
       "id": "lth-bitcoin",
       "nombre": "LTH Bitcoin",
-      "version": "1.0.0",
-      "minOs": "2.4.6",
+      "version": "1.1.0",
+      "minOs": "2.4.7",
       "orden": 10,
       "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-bitcoin/icon.svg",
       "archivo": "apps/lth-bitcoin/lth-bitcoin.js",
-      "bytes": 71117,
-      "sha256": "2cfd53c3a5f26a94e2f705a48e207190515deb8f33ee2b5ef7060ad53e8193f9",
-      "notas": "Primera publicacion del monitor de Bitcoin LTH."
+      "bytes": 166442,
+      "sha256": "592122a0f75991f1bd5b798e6e5a711dfd372ca3e52889c94c1d179a309d2543",
+      "notas": "Grafico en vivo por WebSocket de Coinbase, historial de velas liquidadas con la ultima resaltada, reloj de la vela de 15 minutos y correccion de precision en la apertura (XRP se pintaba al reves)."
     },
     {
       "id": "book-lth",
@@ -147,5 +147,5 @@
       "notas": "Nueva actualizacion de prueba para validar el aviso visual estilo LTH Store."
     }
   ],
-  "firma": "4xdsvZBVlOPniM0hmih9mdRbKXWPWhroP2he1oFNlApdxBkIPpigpECGiIjWo9sZYUdizkNeqqkToExMHM2eVA"
+  "firma": "a0iDEd9a1_mszMbNoRx2whHaoqibUTmSnUj5PybIDrDFx1CbpnFD346HHC4DqSBIfm6INfKvo-ZSykSupBKLJg"
 }
