@@ -1,6 +1,6 @@
 {
   "nombre": "LTH Bitcoin",
-  "version": "1.2.0",
+  "version": "2.1.0",
   "minOs": "2.4.7",
   "orden": 10,
   "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-bitcoin/icon.svg",

@@ -1,6 +1,6 @@
 {
   "formato": 1,
-  "generado": "2026-08-17T19:38:31.036Z",
+  "generado": "2026-08-17T19:45:50.061Z",
   "apps": [
     {
       "id": "lth-ia",
@@ -113,7 +113,7 @@
     {
       "id": "lth-bitcoin",
       "nombre": "LTH Bitcoin",
-      "version": "1.2.0",
+      "version": "2.1.0",
       "minOs": "2.4.7",
       "orden": 10,
       "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-bitcoin/icon.svg",
@@ -147,5 +147,5 @@
       "notas": "Nueva actualizacion de prueba para validar el aviso visual estilo LTH Store."
     }
   ],
-  "firma": "-J4uTFeWbD-_5mUKfJTUy-F_xOsKLVBhIxbWzMv7OMBekROM928t4qfHe46XdHUhE_AyBdmVwP18AB4P5MgNmg"
+  "firma": "G_k3s5CYzadaALqgKZGppBuHLPVg7q5mWCnESF8nyvWRmNJqUSSt8etR_GbE5eB-VqgHZq7YgM_-i1X8DhWXkA"
 }
