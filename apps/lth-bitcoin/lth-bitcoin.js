@@ -682,7 +682,7 @@
 
   // Sube con cada publicacion en la Store: sella la hoja de estilos para que
   // una actualizacion no se quede con el CSS de la version anterior.
-  const APP_VERSION = '2.4.0';
+  const APP_VERSION = '2.5.0';
 
   window.LTH_APPS['lth-bitcoin'] = {
     name: 'LTH Bitcoin',
@@ -744,6 +744,7 @@
       (this._timers || []).forEach(clearInterval);
       this._timers = [];
       if (this._quadFlow) { cancelAnimationFrame(this._quadFlow); this._quadFlow = null; }
+      if (this._zoomKey) { document.removeEventListener('keydown', this._zoomKey); this._zoomKey = null; }
       if (this._wsRetryTimer) { clearTimeout(this._wsRetryTimer); this._wsRetryTimer = null; }
       try { if (this._ws) { this._ws.onclose = null; this._ws.close(1000); } } catch (error) { /* ya cerrado */ }
       this._ws = null;
@@ -1016,6 +1017,32 @@
   </nav>
 
   <div class="ltb-quad" id="ltbQuad" hidden>${quads}</div>
+  <div class="ltb-zoom" id="ltbZoom" role="dialog" aria-label="Grafico ampliado" hidden>
+    <div class="ltb-zoom-card">
+      <header class="ltb-zoom-head">
+        <span class="ltb-zoom-glyph" id="ltbZoomGlyph"></span>
+        <div class="ltb-zoom-id">
+          <strong id="ltbZoomTicker">--</strong>
+          <small id="ltbZoomName">--</small>
+        </div>
+        <div class="ltb-zoom-price">
+          <strong id="ltbZoomPrice">--</strong>
+          <small id="ltbZoomMove">--</small>
+        </div>
+        <div class="ltb-zoom-clock">
+          <span>CIERRA EN</span>
+          <strong id="ltbZoomClock">--:--</strong>
+        </div>
+        <button class="ltb-zoom-close" id="ltbZoomClose" type="button" aria-label="Cerrar">&#10005;</button>
+      </header>
+      <div class="ltb-zoom-chart" id="ltbZoomChart"></div>
+      <footer class="ltb-zoom-foot">
+        <span id="ltbZoomOpen">apertura --</span>
+        <span id="ltbZoomRange">rango --</span>
+        <span id="ltbZoomThesis">--</span>
+      </footer>
+    </div>
+  </div>
 
   <div class="ltb-grid" id="ltbSolo">
     <article class="ltb-card ltb-signal" id="ltbSignalCard">
@@ -1210,6 +1237,15 @@
     },
 
     _bind() {
+      const zoom = this._$('#ltbZoom');
+      if (zoom) {
+        zoom.addEventListener('click', (event) => {
+          if (event.target === zoom || event.target.closest('#ltbZoomClose')) this._closeZoom();
+        });
+      }
+      this._zoomKey = (event) => { if (event.key === 'Escape') this._closeZoom(); };
+      document.addEventListener('keydown', this._zoomKey);
+
       const gear = this._$('#ltbGear');
       if (gear) gear.addEventListener('click', () => this._toggleSettings());
       const close = this._$('#ltbSettingsClose');
@@ -1244,7 +1280,7 @@
         const open = (event) => {
           const panel = event.target.closest('[data-q]');
           if (!panel) return;
-          this._setView(panel.getAttribute('data-q'));
+          this._openZoom(panel.getAttribute('data-q'));
         };
         quad.addEventListener('click', open);
         quad.addEventListener('keydown', (event) => {
@@ -1315,6 +1351,7 @@
           if (now - (this._quadFlowAt || 0) < 50) return;
           this._quadFlowAt = now;
           this._paintCandleClock();
+          if (this._zoom) this._paintZoom();
           ASSET_IDS.forEach(id => {
             const panel = this._root && this._root.querySelector('[data-q="' + id + '"]');
             if (panel) this._paintQuadChart(this._read(id), panel);
@@ -2515,6 +2552,146 @@
       return rows.sort((a, b) => a.t - b.t);
     },
 
+    // ── Grafico ampliado ────────────────────────────────────────────────────
+    _openZoom(assetId) {
+      if (!ASSET_IDS.includes(assetId)) return;
+      this._zoom = assetId;
+      const panel = this._$('#ltbZoom');
+      if (panel) panel.hidden = false;
+      this._paintZoom();
+    },
+
+    _closeZoom() {
+      this._zoom = null;
+      const panel = this._$('#ltbZoom');
+      if (panel) panel.hidden = true;
+    },
+
+    // El grande se dibuja en pixeles reales, no en un lienzo estirado. Es la
+    // diferencia entre un grafico y un adorno: aqui los textos no se deforman,
+    // asi que caben ejes de precio y de tiempo de verdad.
+    _paintZoom() {
+      if (!this._zoom) return;
+      const read = this._read(this._zoom);
+      const host = this._$('#ltbZoomChart');
+      if (!host) return;
+
+      const winStart = Math.floor(Date.now() / CFG.windowMs) * CFG.windowMs;
+      const openRef = this._windowOpenPrice(read, winStart);
+      const serie = this._baselineSeries(read, winStart);
+      const ahora = Date.now();
+      const t0 = Math.max(winStart, ahora - CFG.baselineWindowMs);
+      const filas = serie.filter(row => row.t >= t0);
+      const dec = read.meta.decimals;
+
+      const cabecera = {
+        '#ltbZoomTicker': read.meta.ticker,
+        '#ltbZoomName': read.meta.name,
+        '#ltbZoomPrice': fmtUSD(read.asset.market.price, dec),
+        '#ltbZoomClock': fmtCountdown(Math.max(0, winStart + CFG.windowMs - ahora)),
+      };
+      Object.entries(cabecera).forEach(([sel, valor]) => {
+        const nodo = this._$(sel);
+        if (nodo && nodo.textContent !== valor) nodo.textContent = valor;
+      });
+      const glyph = this._$('#ltbZoomGlyph');
+      if (glyph) glyph.textContent = read.meta.glyph;
+
+      const precio = Number(read.asset.market.price);
+      const movePct = isFinite(precio) && openRef > 0 ? ((precio - openRef) / openRef) * 100 : null;
+      const move = this._$('#ltbZoomMove');
+      if (move) {
+        move.textContent = movePct == null ? '--' : (movePct >= 0 ? '+' : '') + movePct.toFixed(3) + '%';
+        move.className = 'ltb-zoom-move ' + (movePct == null ? '' : (movePct >= 0 ? 'up' : 'down'));
+      }
+      const tesis = this._$('#ltbZoomThesis');
+      if (tesis) tesis.textContent = read.tactic?.thesis || read.tactic?.verdict || 'Sin tesis publicada para esta vela.';
+
+      if (!isFinite(openRef) || filas.length < 2) {
+        this._setHTML(host, 'zoom:' + read.id + ':vacio', '<div class="ltb-empty">Esperando precio en vivo…</div>');
+        return;
+      }
+
+      const W = Math.max(320, host.clientWidth || 640);
+      const H = Math.max(200, host.clientHeight || 320);
+      const M = { top: 14, right: 74, bottom: 26, left: 12 };
+      const pw = W - M.left - M.right;
+      const ph = H - M.top - M.bottom;
+
+      const precios = filas.map(row => row.p).concat([openRef]);
+      let lo = Math.min(...precios);
+      let hi = Math.max(...precios);
+      // Un poco de aire arriba y abajo, y un minimo para que una vela plana no
+      // se dibuje como una linea temblando sobre si misma.
+      const minRango = openRef * 0.0004;
+      if (hi - lo < minRango) { const c = (hi + lo) / 2; lo = c - minRango / 2; hi = c + minRango / 2; }
+      const aire = (hi - lo) * 0.12;
+      lo -= aire; hi += aire;
+
+      const span = Math.max(15000, ahora - t0);
+      const X = (t) => M.left + ((t - t0) / span) * pw;
+      const Y = (p) => M.top + (1 - (p - lo) / (hi - lo)) * ph;
+
+      // Rejilla de precio: cinco niveles redondos, con su etiqueta a la derecha.
+      const niveles = [];
+      for (let i = 0; i <= 4; i++) {
+        const p = lo + ((hi - lo) * i) / 4;
+        niveles.push(`<line class="ltb-zg" x1="${M.left}" x2="${M.left + pw}" y1="${Y(p).toFixed(1)}" y2="${Y(p).toFixed(1)}"/>`
+          + `<text class="ltb-zlabel" x="${(M.left + pw + 8).toFixed(1)}" y="${(Y(p) + 3.5).toFixed(1)}">${fmtUSD(p, dec)}</text>`);
+      }
+
+      // Rejilla de tiempo: una marca por minuto cumplido.
+      const marcas = [];
+      const primerMinuto = Math.ceil(t0 / 60000) * 60000;
+      for (let t = primerMinuto; t <= ahora; t += 60000) {
+        const etiqueta = new Date(t);
+        const hh = String(etiqueta.getHours()).padStart(2, '0');
+        const mm = String(etiqueta.getMinutes()).padStart(2, '0');
+        marcas.push(`<line class="ltb-zg" x1="${X(t).toFixed(1)}" x2="${X(t).toFixed(1)}" y1="${M.top}" y2="${M.top + ph}"/>`
+          + `<text class="ltb-ztime" x="${X(t).toFixed(1)}" y="${(M.top + ph + 16).toFixed(1)}">${hh}:${mm}</text>`);
+      }
+
+      const puntos = filas.map(row => ({ x: X(row.t), y: Y(row.p) }));
+      const arriba = puntos.map(p => ({ x: p.x, y: Math.min(p.y, Y(openRef)) }));
+      const abajo = puntos.map(p => ({ x: p.x, y: Math.max(p.y, Y(openRef)) }));
+      const trazoArriba = smoothPath(arriba);
+      const trazoAbajo = smoothPath(abajo);
+      const yOpen = Y(openRef).toFixed(1);
+      const x0 = puntos[0].x.toFixed(1);
+      const xN = puntos[puntos.length - 1].x.toFixed(1);
+      const ultimo = puntos[puntos.length - 1];
+      const sube = filas[filas.length - 1].p >= openRef;
+
+      // Maximo y minimo del tramo visible: los dos datos que un operador busca
+      // primero al mirar un grafico.
+      let alto = filas[0], bajo = filas[0];
+      for (const row of filas) { if (row.p > alto.p) alto = row; if (row.p < bajo.p) bajo = row; }
+      const extremo = (row, clase, ancla) => `<circle class="ltb-zx ${clase}" cx="${X(row.t).toFixed(1)}" cy="${Y(row.p).toFixed(1)}" r="2.6"/>`
+        + `<text class="ltb-zxl ${clase}" x="${X(row.t).toFixed(1)}" y="${(Y(row.p) + (clase === 'alto' ? -8 : 14)).toFixed(1)}" text-anchor="${ancla}">${fmtUSD(row.p, dec)}</text>`;
+
+      const svg = `<svg class="ltb-zoom-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
+        ${niveles.join('')}
+        ${marcas.join('')}
+        <path class="ltb-zfill up" d="M${x0},${yOpen} ${trazoArriba.slice(1)} L${xN},${yOpen} Z"/>
+        <path class="ltb-zfill down" d="M${x0},${yOpen} ${trazoAbajo.slice(1)} L${xN},${yOpen} Z"/>
+        <line class="ltb-zopen" x1="${M.left}" x2="${M.left + pw}" y1="${yOpen}" y2="${yOpen}"/>
+        <text class="ltb-zopenl" x="${(M.left + pw + 8).toFixed(1)}" y="${(Y(openRef) + 3.5).toFixed(1)}">apertura</text>
+        <path class="ltb-zline up" d="${trazoArriba}"/>
+        <path class="ltb-zline down" d="${trazoAbajo}"/>
+        ${extremo(alto, 'alto', 'middle')}
+        ${extremo(bajo, 'bajo', 'middle')}
+        <circle class="ltb-zdot ${sube ? 'up' : 'down'}" cx="${ultimo.x.toFixed(1)}" cy="${ultimo.y.toFixed(1)}" r="3.6"/>
+        <rect class="ltb-ztag ${sube ? 'up' : 'down'}" x="${(M.left + pw + 3).toFixed(1)}" y="${(ultimo.y - 9).toFixed(1)}" width="${(M.right - 6).toFixed(1)}" height="18" rx="4"/>
+        <text class="ltb-ztagl" x="${(M.left + pw + 8).toFixed(1)}" y="${(ultimo.y + 3.5).toFixed(1)}">${fmtUSD(filas[filas.length - 1].p, dec)}</text>
+      </svg>`;
+      this._setHTML(host, 'zoom:' + read.id + ':' + W + 'x' + H + ':' + ahora, svg);
+
+      const apertura = this._$('#ltbZoomOpen');
+      if (apertura) apertura.textContent = 'apertura ' + fmtUSD(openRef, dec);
+      const rango = this._$('#ltbZoomRange');
+      if (rango) rango.textContent = 'rango ' + fmtUSD(bajo.p, dec) + ' — ' + fmtUSD(alto.p, dec);
+    },
+
     // ── Vista "LOS 4": un cuadrante por activo ──────────────────────────────
     _paintQuad(read) {
       const panel = this._root.querySelector('[data-q="' + read.id + '"]');
@@ -3135,6 +3312,67 @@
   border:1.5px solid #0b0b10;transition:left .5s linear,top .35s cubic-bezier(.22,1,.36,1);}
 .ltb-baseline-dot.up{background:var(--ltb-target-up);box-shadow:0 0 8px rgba(57,255,20,.85);}
 .ltb-baseline-dot.down{background:var(--ltb-down);box-shadow:0 0 8px rgba(255,45,70,.85);}
+/* ===== Grafico ampliado =====
+   Se dibuja en pixeles reales, asi que los textos no se deforman y caben ejes de
+   precio y de tiempo. Es lo que separa un grafico de un adorno. */
+.ltb-zoom{position:absolute;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;
+  padding:26px;background:rgba(4,4,8,.72);backdrop-filter:blur(6px);}
+.ltb-zoom[hidden]{display:none;}
+.ltb-zoom-card{display:flex;flex-direction:column;width:min(1180px,100%);height:min(680px,100%);
+  border:1px solid var(--ltb-edge);border-radius:16px;overflow:hidden;
+  background:linear-gradient(180deg,var(--ltb-panel-raised),var(--ltb-panel));
+  box-shadow:0 30px 70px rgba(0,0,0,.6);}
+.ltb-zoom-head{display:flex;align-items:center;gap:14px;padding:14px 16px;
+  border-bottom:1px solid var(--ltb-edge);}
+.ltb-zoom-glyph{display:grid;place-items:center;width:34px;height:34px;flex:none;border-radius:10px;
+  color:var(--ltb-ink);background:#1b1b23;font-size:17px;font-weight:700;}
+.ltb-zoom-id{display:flex;flex-direction:column;min-width:0;}
+.ltb-zoom-id strong{color:var(--ltb-ink);font-size:16px;letter-spacing:.02em;}
+.ltb-zoom-id small{color:var(--ltb-faint);font-size:10.5px;}
+.ltb-zoom-price{margin-left:auto;text-align:right;}
+.ltb-zoom-price strong{display:block;color:var(--ltb-ink);font-size:22px;font-variant-numeric:tabular-nums;}
+.ltb-zoom-move{font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ltb-faint);}
+.ltb-zoom-move.up{color:var(--ltb-target-up);}.ltb-zoom-move.down{color:var(--ltb-down);}
+.ltb-zoom-clock{text-align:right;padding-left:14px;border-left:1px solid var(--ltb-edge);}
+.ltb-zoom-clock span{display:block;color:var(--ltb-faint);font-size:8.5px;letter-spacing:.16em;}
+.ltb-zoom-clock strong{color:var(--ltb-ink);font-size:17px;font-variant-numeric:tabular-nums;}
+.ltb-zoom-close{width:30px;height:30px;flex:none;border:1px solid var(--ltb-edge);border-radius:9px;
+  background:var(--ltb-deep);color:var(--ltb-dim);font-size:12px;cursor:pointer;}
+.ltb-zoom-close:hover{color:var(--ltb-ink);border-color:var(--ltb-down);}
+.ltb-zoom-chart{flex:1;min-height:0;position:relative;background:var(--ltb-deep);}
+.ltb-zoom-svg{display:block;width:100%;height:100%;}
+.ltb-zoom-foot{display:flex;align-items:center;gap:16px;padding:9px 16px;
+  border-top:1px solid var(--ltb-edge);color:var(--ltb-faint);font-size:10.5px;
+  font-variant-numeric:tabular-nums;}
+.ltb-zoom-foot span:last-child{margin-left:auto;color:var(--ltb-dim);overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;}
+/* Piezas del dibujo */
+.ltb-zg{stroke:currentColor;color:var(--ltb-edge);stroke-width:1;opacity:.34;}
+.ltb-zlabel,.ltb-ztime{fill:var(--ltb-faint);font-size:10px;font-family:inherit;
+  font-variant-numeric:tabular-nums;}
+.ltb-ztime{text-anchor:middle;}
+.ltb-zopen{stroke:#ffffff;stroke-width:1;stroke-dasharray:4 4;opacity:.5;}
+.ltb-zopenl{fill:var(--ltb-dim);font-size:9.5px;font-family:inherit;letter-spacing:.08em;}
+.ltb-zfill{stroke:none;}
+.ltb-zfill.up{fill:var(--ltb-target-up);opacity:.16;}
+.ltb-zfill.down{fill:var(--ltb-down);opacity:.16;}
+.ltb-zline{fill:none;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round;}
+.ltb-zline.up{stroke:var(--ltb-target-up);}
+.ltb-zline.down{stroke:var(--ltb-down);}
+.ltb-zx{fill:none;stroke-width:1.4;}
+.ltb-zx.alto{stroke:var(--ltb-target-up);}.ltb-zx.bajo{stroke:var(--ltb-down);}
+.ltb-zxl{font-size:9.5px;font-family:inherit;font-variant-numeric:tabular-nums;opacity:.85;}
+.ltb-zxl.alto{fill:var(--ltb-target-up);}.ltb-zxl.bajo{fill:var(--ltb-down);}
+.ltb-zdot.up{fill:var(--ltb-target-up);}
+.ltb-zdot.down{fill:var(--ltb-down);}
+.ltb-ztag.up{fill:var(--ltb-target-up);}
+.ltb-ztag.down{fill:var(--ltb-down);}
+.ltb-ztagl{fill:#07070a;font-size:10.5px;font-weight:700;font-family:inherit;
+  font-variant-numeric:tabular-nums;}
+.ltb-root.light .ltb-zoom-glyph{color:#ffffff;background:#3a4150;}
+.ltb-root.light .ltb-zopen{stroke:#2b3240;opacity:.55;}
+.ltb-root.light .ltb-ztagl{fill:#ffffff;}
+
 /* ===== Ajustes y apariencia ===== */
 .ltb-gear{flex:none;width:34px;height:34px;border:1px solid var(--ltb-edge);border-radius:10px;
   background:rgba(8,8,12,.72);color:var(--ltb-dim);font-size:16px;line-height:1;cursor:pointer;
