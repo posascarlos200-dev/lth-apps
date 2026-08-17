@@ -1,8 +1,8 @@
 {
   "nombre": "LTH Bitcoin",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "minOs": "2.4.7",
   "orden": 10,
   "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-bitcoin/icon.svg",
-  "notas": "Ajustes con Apariencia y modo claro. Corrige que una app actualizada por Store se quedara con los estilos de la version anterior."
+  "notas": "Modo claro legible: iconos, pestanas y chapas dejan de salir en negro sobre blanco y los colores de direccion se oscurecen para leerse."
 }

@@ -672,7 +672,7 @@
 
   // Sube con cada publicacion en la Store: sella la hoja de estilos para que
   // una actualizacion no se quede con el CSS de la version anterior.
-  const APP_VERSION = '2.2.0';
+  const APP_VERSION = '2.3.0';
 
   window.LTH_APPS['lth-bitcoin'] = {
     name: 'LTH Bitcoin',
@@ -3152,32 +3152,72 @@
 .ltb-theme-chip.dark{background:linear-gradient(135deg,#0b0b10,#22222c);}
 .ltb-theme-chip.light{background:linear-gradient(135deg,#f4f5f8,#dfe2ea);}
 
-/* Modo claro: solo se reescriben las variables de color. Ningun componente
-   necesita saber en que tema esta. */
+/* ===== Modo claro =====
+   Empieza por las variables de color, pero no basta: hay componentes con el
+   fondo oscuro escrito a mano (los iconos cuadrados, las pestañas, las chapas
+   del grafico). Sobre blanco esos salian como cuadros negros y la interfaz se
+   veia, pero no se entendia. Aqui se traducen uno por uno.
+
+   Los colores de direccion conservan su tono (ambar = UP, rojo = DOWN, verde =
+   cierre sobre la apertura) pero oscurecidos, porque el amarillo neon del modo
+   oscuro sobre blanco es ilegible. */
 .ltb-root.light{
-  --ltb-void:#eef0f5;--ltb-panel:#ffffff;--ltb-panel-raised:#ffffff;--ltb-deep:#f4f5f8;
-  --ltb-edge:#d5d8e0;--ltb-edge-hot:#f3c6cf;--ltb-ink:#14161c;--ltb-dim:#565b68;
-  --ltb-faint:#7b8090;
-  --ltb-up:#8a9a00;--ltb-down:#d81030;--ltb-target-up:#128a10;
-  --ltb-amber:#b96b00;--ltb-red-deep:#c796a0;
+  --ltb-void:#eceff4;--ltb-panel:#ffffff;--ltb-panel-raised:#ffffff;--ltb-deep:#f3f5f9;
+  --ltb-edge:#d3d7e0;--ltb-edge-hot:#f0c2cc;--ltb-ink:#12141a;--ltb-dim:#4d5361;
+  --ltb-faint:#697082;
+  --ltb-up:#8a6400;--ltb-down:#c8102e;--ltb-target-up:#0a7d2f;
+  --ltb-amber:#a35b00;--ltb-red-deep:#e8b6be;
   color:var(--ltb-ink);
   background:
-    radial-gradient(760px 300px at 50% -14%,rgba(138,154,0,.10),transparent 70%),
-    radial-gradient(600px 320px at 12% 4%,rgba(216,16,48,.07),transparent 68%),
-    linear-gradient(180deg,#f7f8fb 0%,var(--ltb-void) 100%);}
-.ltb-root.light::before{opacity:.28;}
-.ltb-root.light .ltb-top{background:rgba(255,255,255,.94);
-  border-bottom-color:rgba(216,16,48,.18);}
+    radial-gradient(760px 300px at 50% -14%,rgba(138,100,0,.07),transparent 70%),
+    radial-gradient(600px 320px at 12% 4%,rgba(200,16,46,.05),transparent 68%),
+    linear-gradient(180deg,#f8f9fc 0%,var(--ltb-void) 100%);}
+/* La rejilla de fondo era para pantalla negra: sobre blanco solo ensucia. */
+.ltb-root.light::before{display:none;}
+
+/* Cabecera y barra superior */
+.ltb-root.light .ltb-top{background:rgba(255,255,255,.96);border-bottom-color:rgba(200,16,46,.16);}
+.ltb-root.light .ltb-logo{color:#ffffff;
+  background:linear-gradient(150deg,#e8a800,#e07b00 55%,var(--ltb-down));
+  box-shadow:0 3px 10px rgba(200,16,46,.22);}
 .ltb-root.light .ltb-gear,
 .ltb-root.light .ltb-candleclock{background:#ffffff;}
+.ltb-root.light .ltb-candleclock-track{background:#e2e5ec;}
+
+/* Pestañas de activo: eran un degradado casi negro */
+.ltb-root.light .ltb-tab{background:linear-gradient(180deg,#ffffff,#f5f6fa);}
+.ltb-root.light .ltb-tab:hover{background:#ffffff;}
+.ltb-root.light .ltb-tab.active{background:#ffffff;}
+.ltb-root.light .ltb-tab-glyph,
+.ltb-root.light .ltb-q-glyph{color:#ffffff;background:#3a4150;}
+.ltb-root.light .ltb-tab.active .ltb-tab-glyph,
+.ltb-root.light .ltb-q.up .ltb-q-glyph{color:#ffffff;background:var(--ltb-up);}
+.ltb-root.light .ltb-q.down .ltb-q-glyph{color:#ffffff;background:var(--ltb-down);}
+
+/* Tarjetas */
 .ltb-root.light .ltb-q,
-.ltb-root.light .ltb-card{background:linear-gradient(180deg,#ffffff,#fbfbfd);
-  box-shadow:0 8px 20px rgba(20,22,28,.08);}
-.ltb-root.light .ltb-q-chart{background-color:#fbfbfd;
-  background-image:linear-gradient(rgba(216,16,48,.05) 1px,transparent 1px);}
-.ltb-root.light .ltb-baseline-ref{stroke:#333a46;opacity:.5;}
-.ltb-root.light .ltb-settings{box-shadow:0 18px 44px rgba(20,22,28,.16);}
-.ltb-root.light .ltb-settings-close:hover{background:rgba(20,22,28,.07);}
+.ltb-root.light .ltb-card{background:linear-gradient(180deg,#ffffff,#fbfcfe);
+  box-shadow:0 6px 18px rgba(18,20,26,.07);}
+.ltb-root.light .ltb-q-signal{border-color:#e0e3ea;background:#f7f8fb;}
+.ltb-root.light .ltb-q-chart{background-color:#fbfcfe;border-color:#e2e5ec;
+  background-image:linear-gradient(rgba(200,16,46,.045) 1px,transparent 1px);}
+.ltb-root.light .ltb-baseline-ref{stroke:#2b3240;opacity:.55;}
+/* Las chapas del grafico eran negras translucidas */
+.ltb-root.light .ltb-q-open,
+.ltb-root.light .ltb-q-dev{color:var(--ltb-dim);background:rgba(255,255,255,.9);
+  border:1px solid #e2e5ec;}
+.ltb-root.light .ltb-q-dev.up{color:var(--ltb-target-up);}
+.ltb-root.light .ltb-q-dev.down{color:var(--ltb-down);}
+/* La chapa del motor: amarillo neon sobre blanco no se leia */
+.ltb-root.light .ltb-q-tech{color:#6d5000;border-color:rgba(138,100,0,.4);
+  background:rgba(138,100,0,.10);}
+.ltb-root.light .ltb-q-foot{border-top-color:#e6e9ef;}
+
+/* Panel de ajustes */
+.ltb-root.light .ltb-settings{box-shadow:0 16px 40px rgba(18,20,26,.14);}
+.ltb-root.light .ltb-settings-close:hover{background:rgba(18,20,26,.07);}
+.ltb-root.light .ltb-theme-btn{background:#f7f8fb;}
+.ltb-root.light .ltb-theme-btn.active{background:#ffffff;border-color:var(--ltb-up);}
 
 /* Reloj de la vela de 15 min. Solo en la vista de los 4: en la de un activo ya
    esta el medidor del target con su propio contador. */

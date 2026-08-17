@@ -1,6 +1,6 @@
 {
   "formato": 1,
-  "generado": "2026-08-17T19:48:39.101Z",
+  "generado": "2026-08-17T19:52:58.891Z",
   "apps": [
     {
       "id": "lth-ia",
@@ -113,14 +113,14 @@
     {
       "id": "lth-bitcoin",
       "nombre": "LTH Bitcoin",
-      "version": "2.2.0",
+      "version": "2.3.0",
       "minOs": "2.4.7",
       "orden": 10,
       "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-bitcoin/icon.svg",
       "archivo": "apps/lth-bitcoin/lth-bitcoin.js",
-      "bytes": 174206,
-      "sha256": "5d438bc558f8bdfe9291f7df575fa935b58120a95a313861029b65850eeb4aec",
-      "notas": "Ajustes con Apariencia y modo claro. Corrige que una app actualizada por Store se quedara con los estilos de la version anterior."
+      "bytes": 176301,
+      "sha256": "2fc43c2ab23387106ce5981af7da0d023b26102c387dac072649b487010b065b",
+      "notas": "Modo claro legible: iconos, pestanas y chapas dejan de salir en negro sobre blanco y los colores de direccion se oscurecen para leerse."
     },
     {
       "id": "book-lth",
@@ -147,5 +147,5 @@
       "notas": "Nueva actualizacion de prueba para validar el aviso visual estilo LTH Store."
     }
   ],
-  "firma": "zdVZRsHy3R8L2Cer1QoBRzgFnz_LXMr3rA2BXT2fMldyyy-bzZ8AWLCe7IBrcOsEvow7YOIhAPufGnq-LAH2BA"
+  "firma": "1Ifsg-H_zxiRy2BKyBhGokN394yz-BTyKxMHstF9e_bg9uWOEw-3vZFlP4AIKxPqNOdUzunnHICYdnMoVjapyQ"
 }
