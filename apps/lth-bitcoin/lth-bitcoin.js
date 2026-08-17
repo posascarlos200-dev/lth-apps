@@ -47,7 +47,11 @@
     coinbaseWs: 'wss://advanced-trade-ws.coinbase.com',
     wsFreshMs: 6000,          // con el WS vivo, el sondeo REST se hace a un lado
     historyLimit: 60,
-    baselineLookbackMs: 4 * 60 * 1000, // ventana rodante del grafico "baseline" de LOS 4
+    // El recuadro del grafico muestra los ULTIMOS 5 minutos, no la vela entera.
+    // Con los 15 minutos completos el trazo quedaba tan comprimido que los
+    // movimientos no se distinguian; con 5 se leen, y lo mas viejo se va
+    // desvaneciendo por la izquierda en vez de encogerse.
+    baselineWindowMs: 5 * 60 * 1000,
     pcOnlineMs: 50000,
     viewKey: 'ltb.view.v2',
     chartTfKey: 'ltb.chartTf.v1',
@@ -558,13 +562,19 @@
   //     mueve con cada precio que entra.
   function baselineSvg(samples, target, windowStart, spanMs, scale) {
     const now = Date.now();
-    const t0 = isFinite(windowStart) ? windowStart : NaN;
-    const limit = Math.max(60000, Number(spanMs) || 0);
-    const span = Math.max(15000, Math.min(limit, now - t0));
-    if (!isFinite(t0)) return null;
+    const apertura = isFinite(windowStart) ? windowStart : NaN;
+    if (!isFinite(apertura)) return null;
+    const ventana = Math.max(60000, Number(spanMs) || 0);
+    // Ventana rodante: arranca en la apertura de la vela y, pasados los 5
+    // minutos, empieza a avanzar dejando atras lo mas viejo. Asi el trazo
+    // conserva siempre el mismo detalle en vez de comprimirse segun corre la
+    // vela. El borde izquierdo se desvanece por CSS para que lo que sale lo
+    // haga difuminandose, no cortado de golpe.
+    const t0 = Math.max(apertura, now - ventana);
+    const span = Math.max(15000, now - t0);
     const rows = (Array.isArray(samples) ? samples : [])
       .filter(row => row && isFinite(Number(row.t)) && isFinite(Number(row.p)) && Number(row.p) > 0
-        && row.t >= t0 && row.t <= t0 + span)
+        && row.t >= t0 && row.t <= now)
       .sort((a, b) => a.t - b.t);
     if (rows.length < 2 || !isFinite(target) || target <= 0) return null;
 
@@ -672,7 +682,7 @@
 
   // Sube con cada publicacion en la Store: sella la hoja de estilos para que
   // una actualizacion no se quede con el CSS de la version anterior.
-  const APP_VERSION = '2.3.0';
+  const APP_VERSION = '2.4.0';
 
   window.LTH_APPS['lth-bitcoin'] = {
     name: 'LTH Bitcoin',
@@ -2589,7 +2599,7 @@
       if (!this._baselineScale) this._baselineScale = {};
       const scale = this._baselineScale[read.id] || (this._baselineScale[read.id] = {});
       const drawn = isFinite(openRef)
-        ? baselineSvg(priceSamples, openRef, winStart, CFG.windowMs, scale)
+        ? baselineSvg(priceSamples, openRef, winStart, CFG.baselineWindowMs, scale)
         : null;
       if (!drawn) {
         this._setHTML(host, 'q-chart:' + read.id, isFinite(openRef)
@@ -3235,6 +3245,9 @@
 /* Misma caja que el trazo: sin esto la pelota se despegaba de la punta de la
    linea por los 6 px de relleno del recuadro. */
 .ltb-baseline-layer{position:absolute;inset:6px;}
+/* Lo que sale por la izquierda se difumina en vez de cortarse en seco. */
+.ltb-baseline-svg{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 11%,#000 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 11%,#000 100%);}
 /* Sin transicion: la linea se redibuja al instante y cualquier animacion en la
    pelota la deja atras de su propia punta. */
 .ltb-baseline-dot{transition:none;}

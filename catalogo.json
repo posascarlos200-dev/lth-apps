@@ -1,6 +1,6 @@
 {
   "formato": 1,
-  "generado": "2026-08-17T19:52:58.891Z",
+  "generado": "2026-08-17T21:04:29.602Z",
   "apps": [
     {
       "id": "lth-ia",
@@ -113,14 +113,14 @@
     {
       "id": "lth-bitcoin",
       "nombre": "LTH Bitcoin",
-      "version": "2.3.0",
+      "version": "2.4.0",
       "minOs": "2.4.7",
       "orden": 10,
       "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-bitcoin/icon.svg",
       "archivo": "apps/lth-bitcoin/lth-bitcoin.js",
-      "bytes": 176301,
-      "sha256": "2fc43c2ab23387106ce5981af7da0d023b26102c387dac072649b487010b065b",
-      "notas": "Modo claro legible: iconos, pestanas y chapas dejan de salir en negro sobre blanco y los colores de direccion se oscurecen para leerse."
+      "bytes": 177180,
+      "sha256": "f9575a56f445306f0aadaaecfdf94ab8d119651467cbc91ab848b65fb2698acc",
+      "notas": "El grafico muestra los ultimos 5 minutos en vez de la vela entera: los movimientos se leen y lo viejo se desvanece por la izquierda."
     },
     {
       "id": "book-lth",
@@ -147,5 +147,5 @@
       "notas": "Nueva actualizacion de prueba para validar el aviso visual estilo LTH Store."
     }
   ],
-  "firma": "1Ifsg-H_zxiRy2BKyBhGokN394yz-BTyKxMHstF9e_bg9uWOEw-3vZFlP4AIKxPqNOdUzunnHICYdnMoVjapyQ"
+  "firma": "-gOTZLEZnK-LGok4WqVRtLSBENl44mz2V80KnvaCotU1uInicqA5CHSX7FZlhDITU61MlCaslcMOcU6UG-IRSg"
 }
