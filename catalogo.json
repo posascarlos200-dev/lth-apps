@@ -1,6 +1,6 @@
 {
   "formato": 1,
-  "generado": "2026-08-18T03:25:46.313Z",
+  "generado": "2026-08-18T03:29:04.891Z",
   "apps": [
     {
       "id": "lth-ia",
@@ -113,14 +113,14 @@
     {
       "id": "lth-bitcoin",
       "nombre": "LTH Bitcoin",
-      "version": "2.6.0",
-      "minOs": "2.4.7",
+      "version": "2.6.1",
+      "minOs": "2.4.9",
       "orden": 10,
       "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-bitcoin/icon.svg",
       "archivo": "apps/lth-bitcoin/lth-bitcoin.js",
       "bytes": 191367,
-      "sha256": "7bdabe3ea3098896c6ed2db419006188aa58c9ad97d15586944a4f981eb3b89b",
-      "notas": "El trazo deja de pasarse en los picos: interpolacion monotona, la curva ya no puede dibujar un maximo que no ocurrio."
+      "sha256": "c3bc6a4ed8d70083b9747345be676f81d27d356764ce267efbe0fa88a63396b2",
+      "notas": "Trazo sin dobleces en los picos y grafico ampliado al pulsar una tarjeta. Necesita LTH.OS 2.4.9, que es donde las apps se actualizan sin reiniciar."
     },
     {
       "id": "book-lth",
@@ -147,5 +147,5 @@
       "notas": "Nueva actualizacion de prueba para validar el aviso visual estilo LTH Store."
     }
   ],
-  "firma": "wVcaofsrGpSjya3m6cVmK2cl5yeNflOZcAstan4GBVGn73Bm4h_tNigT0g3WNd9sXv2cxyJD_qX3_i8YzpxTMA"
+  "firma": "997STbnDbIwhjJKtrenoouBjPbqJOEPn1awbbYcI-Rz53CCeEs4qBvEwSLTr8nMDCx0vyZyIKI7n9KSa9eCK9Q"
 }

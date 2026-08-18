@@ -1,8 +1,8 @@
 {
   "nombre": "LTH Bitcoin",
-  "version": "2.6.0",
-  "minOs": "2.4.7",
+  "version": "2.6.1",
+  "minOs": "2.4.9",
   "orden": 10,
   "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-bitcoin/icon.svg",
-  "notas": "El trazo deja de pasarse en los picos: interpolacion monotona, la curva ya no puede dibujar un maximo que no ocurrio."
+  "notas": "Trazo sin dobleces en los picos y grafico ampliado al pulsar una tarjeta. Necesita LTH.OS 2.4.9, que es donde las apps se actualizan sin reiniciar."
 }

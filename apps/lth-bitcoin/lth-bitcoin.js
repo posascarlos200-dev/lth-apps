@@ -709,7 +709,7 @@
 
   // Sube con cada publicacion en la Store: sella la hoja de estilos para que
   // una actualizacion no se quede con el CSS de la version anterior.
-  const APP_VERSION = '2.6.0';
+  const APP_VERSION = '2.6.1';
 
   window.LTH_APPS['lth-bitcoin'] = {
     name: 'LTH Bitcoin',
