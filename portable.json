@@ -1,9 +1,9 @@
 {
   "formato": 1,
-  "version": "2.4.9",
-  "assetName": "LTH.OS-2.4.9-x64.exe",
-  "bytes": 179333272,
-  "sha256": "845203f5e36ea791c3c1975da12dba77a16a9354eb6a3cbea098f8036150a3c9",
-  "generado": "2026-08-17T23:01:24.326Z",
-  "firma": "2sGd4rlrshKlkeAd2BoNGUGsU9AR7cSjYFN8c9xDpJU6dRYJlRl5X1Z1NS8qoA1UuRgJPy08dfWvWO9DwcPY3w"
+  "version": "2.4.9.1",
+  "assetName": "LTH.OS-2.4.9.1-x64.exe",
+  "bytes": 179365985,
+  "sha256": "a20b17cbf95c49d1797ec67aef76e510774b45ec3b86d5da3abb785cbdf64d83",
+  "generado": "2026-08-18T23:07:30.049Z",
+  "firma": "Bjl-uwNKONXm6QUD_1xBl0FG3g1ptwIomZv5Fwmik4gfOBlAcwlUKjldA3XsRJLBnm7wtIexJVDoMSsCWqYwgQ"
 }
