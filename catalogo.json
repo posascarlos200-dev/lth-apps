@@ -1,6 +1,6 @@
 {
   "formato": 1,
-  "generado": "2026-08-17T22:39:10.768Z",
+  "generado": "2026-08-18T03:25:46.313Z",
   "apps": [
     {
       "id": "lth-ia",
@@ -113,14 +113,14 @@
     {
       "id": "lth-bitcoin",
       "nombre": "LTH Bitcoin",
-      "version": "2.5.0",
+      "version": "2.6.0",
       "minOs": "2.4.7",
       "orden": 10,
       "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-bitcoin/icon.svg",
       "archivo": "apps/lth-bitcoin/lth-bitcoin.js",
-      "bytes": 190139,
-      "sha256": "96138f51f54be5fad1145b5852fe9d6245188002cbcd4e80ba26933e76305f7c",
-      "notas": "Pulsa una tarjeta y el grafico se abre en grande, con ejes de precio y tiempo, apertura, maximo y minimo del tramo y el precio vivo en el eje."
+      "bytes": 191367,
+      "sha256": "7bdabe3ea3098896c6ed2db419006188aa58c9ad97d15586944a4f981eb3b89b",
+      "notas": "El trazo deja de pasarse en los picos: interpolacion monotona, la curva ya no puede dibujar un maximo que no ocurrio."
     },
     {
       "id": "book-lth",
@@ -147,5 +147,5 @@
       "notas": "Nueva actualizacion de prueba para validar el aviso visual estilo LTH Store."
     }
   ],
-  "firma": "ZxzckkaAWRdObYn_qKMRyH6YZHHkHjZTHoWt4gt87o9XnixyzftnL6hB8eZFiV0SK2ziUmm_aaorKCn348s_wg"
+  "firma": "wVcaofsrGpSjya3m6cVmK2cl5yeNflOZcAstan4GBVGn73Bm4h_tNigT0g3WNd9sXv2cxyJD_qX3_i8YzpxTMA"
 }

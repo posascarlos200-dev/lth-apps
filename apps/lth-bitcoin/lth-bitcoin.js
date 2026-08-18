@@ -514,17 +514,44 @@
     if (points.length < 3) {
       return 'M' + points.map(p => p.x.toFixed(2) + ',' + p.y.toFixed(2)).join(' L');
     }
-    const at = i => points[Math.max(0, Math.min(points.length - 1, i))];
+    // Interpolacion monotona (Fritsch-Carlson).
+    //
+    // El suavizado anterior (Catmull-Rom) podia PASARSE del valor de los puntos
+    // que unia: tras una subida fuerte seguida de un tramo plano dibujaba un
+    // pico y un doblez que no existieron. En un grafico de precios eso no es un
+    // defecto estetico, es dibujar un maximo que nunca ocurrio.
+    //
+    // Esta version calcula las pendientes de forma que la curva NUNCA se sale
+    // del rango de los dos puntos que une. Sigue pasando por todos los puntos
+    // reales; simplemente ya no se inventa nada entre ellos.
+    const n = points.length;
+    const dx = new Array(n - 1);
+    const pend = new Array(n - 1);
+    for (let i = 0; i < n - 1; i++) {
+      dx[i] = points[i + 1].x - points[i].x;
+      pend[i] = dx[i] === 0 ? 0 : (points[i + 1].y - points[i].y) / dx[i];
+    }
+    const t = new Array(n);
+    t[0] = pend[0];
+    t[n - 1] = pend[n - 2];
+    for (let i = 1; i < n - 1; i++) {
+      // Si el precio cambia de sentido en este punto, la tangente es plana: asi
+      // el maximo o el minimo queda EXACTAMENTE en el dato, sin sobrepasarlo.
+      if (pend[i - 1] * pend[i] <= 0) { t[i] = 0; continue; }
+      const w1 = 2 * dx[i] + dx[i - 1];
+      const w2 = dx[i] + 2 * dx[i - 1];
+      t[i] = (w1 + w2) / (w1 / pend[i - 1] + w2 / pend[i]);
+    }
     let d = 'M' + points[0].x.toFixed(2) + ',' + points[0].y.toFixed(2);
-    for (let i = 0; i < points.length - 1; i++) {
-      const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
-      const c1x = p1.x + (p2.x - p0.x) / 6;
-      const c1y = p1.y + (p2.y - p0.y) / 6;
-      const c2x = p2.x - (p3.x - p1.x) / 6;
-      const c2y = p2.y - (p3.y - p1.y) / 6;
+    for (let i = 0; i < n - 1; i++) {
+      const paso = dx[i] / 3;
+      const c1x = points[i].x + paso;
+      const c1y = points[i].y + t[i] * paso;
+      const c2x = points[i + 1].x - paso;
+      const c2y = points[i + 1].y - t[i + 1] * paso;
       d += ' C' + c1x.toFixed(2) + ',' + c1y.toFixed(2)
         + ' ' + c2x.toFixed(2) + ',' + c2y.toFixed(2)
-        + ' ' + p2.x.toFixed(2) + ',' + p2.y.toFixed(2);
+        + ' ' + points[i + 1].x.toFixed(2) + ',' + points[i + 1].y.toFixed(2);
     }
     return d;
   }
@@ -682,7 +709,7 @@
 
   // Sube con cada publicacion en la Store: sella la hoja de estilos para que
   // una actualizacion no se quede con el CSS de la version anterior.
-  const APP_VERSION = '2.5.0';
+  const APP_VERSION = '2.6.0';
 
   window.LTH_APPS['lth-bitcoin'] = {
     name: 'LTH Bitcoin',

@@ -1,8 +1,8 @@
 {
   "nombre": "LTH Bitcoin",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "minOs": "2.4.7",
   "orden": 10,
   "iconUrl": "https://raw.githubusercontent.com/posascarlos200-dev/lth-apps/main/apps/lth-bitcoin/icon.svg",
-  "notas": "Pulsa una tarjeta y el grafico se abre en grande, con ejes de precio y tiempo, apertura, maximo y minimo del tramo y el precio vivo en el eje."
+  "notas": "El trazo deja de pasarse en los picos: interpolacion monotona, la curva ya no puede dibujar un maximo que no ocurrio."
 }
